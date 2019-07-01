@@ -80,10 +80,10 @@ public class Studentas {
     @Override
     public String toString() {
         return "Studentas{" +
-                "vardas='" + vardas + '\'' +
+                "id='" + id + '\'' +
+                ", vardas='" + vardas + '\'' +
                 ", pavarde='" + pavarde + '\'' +
                 ", el_pastas='" + el_pastas + '\'' +
-                ", stPazymiai=" + stPazymiai +
                 '}';
     }
 }
