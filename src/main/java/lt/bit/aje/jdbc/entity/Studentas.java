@@ -42,8 +42,6 @@ public class Studentas {
         this.el_pastas = el_pastas;
     }
 
-
-
     public String getId() {
         return id;
     }

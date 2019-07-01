@@ -1,6 +1,5 @@
 package lt.bit.aje.jdbc.db;
 
-
 import lt.bit.aje.jdbc.entity.Pazymiai;
 import lt.bit.aje.jdbc.entity.Studentas;
 
@@ -15,17 +14,10 @@ public class DatabaseManager {
     private static final String SELECT_STUDENTAS = "Select * From dienynas.studentai";
     private static final String SELECT_PAZYMIAI = "Select * From dienynas.pazymiai";
     private static final String SELECT_STUDENTAS_PAZYMIAI = "Select * From pazymiai";
+    private static final String SELECT_STUDENTAI_REZULTATAI = "select studentai.id, pavarde, vardas, AVG(pazymiai.pazymys) from dienynas.studentai\n" +
+            "LEFT JOIN dienynas.pazymiai\n" +
+            "ON studentai.id = pazymiai.studentas_id group by studentai.pavarde order by pavarde, vardas asc limit 10";
 
-    //   private static final String SELECT_EMPLOYEE_MIN_SALARY = "select employees.emp_no, first_name, last_name, sum(salaries.salary) as salary from employees.employees\n" +
-    //           "INNER JOIN employees.salaries\n" +
-    //           "ON employees.emp_no = salaries.emp_no group by employees.emp_no order by salary, employees.emp_no asc limit 10";
-
-    //   private static final String SELECT_EMPLOYEE_MIN_SALARY = "select employees.emp_no, first_name, last_name, sum(salaries.salary) as salary from employees.employees\n" +
-    //           "INNER JOIN employees.salaries\n" +
-    //           "ON employees.emp_no = salaries.emp_no group by employees.emp_no order by salary, employees.emp_no asc limit 10";
-
-    // private static final String SELECT_KURS_VIDURKI = "select
-    // SELECT AVG(v.pazymys)FROM studentai a LEFT JOIN pazymiai v ON a.id = v.studentas_id WHERE a.id =1
     private Connection connection;
 
     public DatabaseManager() {
@@ -56,7 +48,6 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return results;
     }
 
@@ -127,7 +118,6 @@ public class DatabaseManager {
 
             @Override
             public void clear() {
-
             }
 
             @Override
@@ -145,12 +135,12 @@ public class DatabaseManager {
                 return null;
             }
         };
+
         try {
   //         int ID_COL = 1;
   //         int STUDENTAS_ID_COL = 2;
   //         int DATA_COL = 3;
   //         int PAZYMYS_COL = 4;
-
             PreparedStatement psPaz = connection.prepareStatement(SELECT_STUDENTAS_PAZYMIAI);
             ResultSet rs = psPaz.executeQuery();
     //        while(rs.next()){
@@ -163,31 +153,30 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return results3;
     }
 
-
-
-    //   public List<Object> getMinSalary(){
- //       List<Object> results = new ArrayList<>();
- //       try {
- //           PreparedStatement ps = connection.prepareStatement(SELECT_EMPLOYEE_MIN_SALARY);
- //           ResultSet rs = ps.executeQuery();
- //           while(rs.next()) {
- //               System.out.println(rs.getLong(1) + "  " +
- //                       rs.getString(2) + " " +
- //                       rs.getString(3) + " " +
- //                       rs.getLong(4));
- //           }
- //           closeResultSet(rs);
- //           closePrepaerdStatement(ps);
- //       } catch (SQLException e) {
- //           e.printStackTrace();
- //       }
-//
- //       return results;
- //   }
+    /**
+     *  Formuojame reyultatų sąrašą
+     */
+   public List<Object> getStudentasRezultatai(){
+       List<Object> results = new ArrayList<>();
+       try {
+           PreparedStatement ps = connection.prepareStatement(SELECT_STUDENTAI_REZULTATAI);
+           ResultSet rs = ps.executeQuery();
+           while(rs.next()) {
+               System.out.println(rs.getLong(1) + "  " +
+                       rs.getString(2) + " " +
+                       rs.getString(3) + " " +
+                       rs.getLong(4));
+           }
+           closeResultSet(rs);
+           closePrepaerdStatement(ps);
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return results;
+   }
 
     private void closePrepaerdStatement( PreparedStatement stmt ) throws SQLException
     {
@@ -211,5 +200,6 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }

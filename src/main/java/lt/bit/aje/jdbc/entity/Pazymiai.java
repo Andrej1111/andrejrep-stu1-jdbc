@@ -1,8 +1,5 @@
 package lt.bit.aje.jdbc.entity;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 public class Pazymiai {
 
     private String id;
